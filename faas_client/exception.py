@@ -1,0 +1,2 @@
+class FaasClientException(Exception):
+    pass

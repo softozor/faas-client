@@ -1,0 +1,49 @@
+[tool.poetry]
+name = "faas-client"
+version = "0.0.0"
+description = "A client library for faas-cli"
+authors = ["softozor <softozor@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/softozor/faas-client"
+packages = [{include = "faas_client"}]
+
+[[tool.poetry.source]]
+name = "pypi-group"
+url = "https://jelasticozor-pm.hidora.com/repository/pypi/simple"
+default = true
+
+[tool.poetry.dependencies]
+python = "^3.8"
+sh = "^1.14.3"
+
+[tool.poetry.group.dev.dependencies]
+mypy = "0.991"
+
+[tool.poetry-dynamic-versioning]
+enable = true
+format-jinja = """
+    {%- if distance == 0 -%}
+        {{ serialize_pep440(base, stage, revision) }}
+    {%- elif revision is not none -%}
+        {{ serialize_pep440(base, stage, revision + 1, dev=distance, metadata=[commit]) }}
+    {%- else -%}
+        {{ serialize_pep440(bump_version(base), stage, revision, dev=distance, metadata=[commit]) }}
+    {%- endif -%}
+"""
+
+[tool.isort]
+profile = "black"
+atomic = true
+combine_as_imports = true
+
+[tool.mypy]
+python_version = 3.8
+ignore_missing_imports = true
+warn_unused_ignores = true
+no_implicit_optional = true
+
+
+[build-system]
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning"]
+build-backend = "poetry_dynamic_versioning.backend"
