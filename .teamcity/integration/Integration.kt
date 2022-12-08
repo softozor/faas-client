@@ -1,18 +1,17 @@
 package integration
 
-import common.templates.NexusDockerLogin
 import common.git.publishCommitShortSha
 import common.python.buildPythonPackage
 import common.python.publishPythonPackageToHosted
+import common.templates.NexusDockerLogin
 import jetbrains.buildServer.configs.kotlin.BuildType
 import jetbrains.buildServer.configs.kotlin.DslContext
-import jetbrains.buildServer.configs.kotlin.buildFeatures.dockerSupport
 import jetbrains.buildServer.configs.kotlin.triggers.vcs
 
 class Integration(
     dockerToolsTag: String
 ) : BuildType({
-//    templates(NexusDockerLogin)
+    templates(NexusDockerLogin)
 
     id("Integration")
     name = "Integration"
@@ -44,15 +43,6 @@ class Integration(
         dist/*.whl
         dist/PKG-INFO.txt
     """.trimIndent()
-
-    features {
-        dockerSupport {
-            cleanupPushedImages = true
-            loginToRegistry = on {
-                dockerRegistryId = "PROJECT_EXT_3,PROJECT_EXT_2"
-            }
-        }
-    }
 
     params {
         param("teamcity.vcsTrigger.runBuildInNewEmptyBranch", "true")
