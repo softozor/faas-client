@@ -1,6 +1,6 @@
 package integration
 
-import common.docker.NexusDockerLogin
+import common.templates.NexusDockerLogin
 import common.git.publishCommitShortSha
 import common.python.buildPythonPackage
 import common.python.publishPythonPackageToHosted
