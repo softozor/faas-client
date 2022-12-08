@@ -1,6 +1,6 @@
-import jetbrains.buildServer.configs.kotlin.*
-import jetbrains.buildServer.configs.kotlin.buildFeatures.perfmon
-import jetbrains.buildServer.configs.kotlin.triggers.vcs
+import integration.Integration
+import jetbrains.buildServer.configs.kotlin.project
+import jetbrains.buildServer.configs.kotlin.version
 
 /*
 The settings script is an entry point for defining a TeamCity
@@ -27,25 +27,12 @@ To debug in IntelliJ Idea, open the 'Maven Projects' tool window (View
 version = "2022.10"
 
 project {
+    params {
+        param("teamcity.ui.settings.readOnly", "true")
+    }
 
-    buildType(SharedLibraries_FaasClient_Build)
+    val dockerToolsTag = "ca2d28e2"
+
+    val integrationBuild = Integration(dockerToolsTag = dockerToolsTag)
+    buildType(integrationBuild)
 }
-
-object SharedLibraries_FaasClient_Build : BuildType({
-    id("Build")
-    name = "Build"
-
-    vcs {
-        root(DslContext.settingsRoot)
-    }
-
-    triggers {
-        vcs {
-        }
-    }
-
-    features {
-        perfmon {
-        }
-    }
-})
