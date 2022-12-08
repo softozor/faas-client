@@ -11,7 +11,7 @@ import jetbrains.buildServer.configs.kotlin.triggers.vcs
 class Integration(
     dockerToolsTag: String
 ) : BuildType({
-//    templates(NexusDockerLogin)
+    templates(NexusDockerLogin)
 
     id("Integration")
     name = "Integration"
