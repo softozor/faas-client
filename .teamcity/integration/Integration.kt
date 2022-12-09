@@ -6,12 +6,12 @@ import common.python.publishPythonPackageToHosted
 import jetbrains.buildServer.configs.kotlin.BuildType
 import jetbrains.buildServer.configs.kotlin.DslContext
 import jetbrains.buildServer.configs.kotlin.triggers.vcs
-import templates.NexusDockerLogin
+import templates.DockerLogin
 
 class Integration(
     dockerToolsTag: String
 ) : BuildType({
-    templates(NexusDockerLogin)
+    templates(DockerLogin)
 
     id("Integration")
     name = "Integration"
