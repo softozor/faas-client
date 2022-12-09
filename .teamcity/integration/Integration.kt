@@ -5,13 +5,14 @@ import common.python.buildPythonPackage
 import common.python.publishPythonPackageToHosted
 import jetbrains.buildServer.configs.kotlin.BuildType
 import jetbrains.buildServer.configs.kotlin.DslContext
+import jetbrains.buildServer.configs.kotlin.Template
 import jetbrains.buildServer.configs.kotlin.triggers.vcs
-import templates.DockerLogin
 
 class Integration(
-    dockerToolsTag: String
+    dockerToolsTag: String,
+    template: Template
 ) : BuildType({
-    templates(DockerLogin.create())
+    templates(template)
 
     id("Integration")
     name = "Integration"

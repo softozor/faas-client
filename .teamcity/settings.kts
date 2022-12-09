@@ -1,6 +1,7 @@
 import integration.Integration
 import jetbrains.buildServer.configs.kotlin.project
 import jetbrains.buildServer.configs.kotlin.version
+import templates.DockerLogin
 
 /*
 The settings script is an entry point for defining a TeamCity
@@ -31,8 +32,10 @@ project {
         param("teamcity.ui.settings.readOnly", "true")
     }
 
+    val dockerLoginTemplate = DockerLogin()
+
     val dockerToolsTag = "ca2d28e2"
 
-    val integrationBuild = Integration(dockerToolsTag = dockerToolsTag)
+    val integrationBuild = Integration(dockerToolsTag = dockerToolsTag, template = dockerLoginTemplate)
     buildType(integrationBuild)
 }

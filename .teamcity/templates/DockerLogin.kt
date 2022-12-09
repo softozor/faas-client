@@ -3,7 +3,7 @@ package templates
 import jetbrains.buildServer.configs.kotlin.Template
 import jetbrains.buildServer.configs.kotlin.buildFeatures.dockerSupport
 
-object DockerLogin : Template({
+class DockerLogin() : Template({
     name = "Docker Login"
     id("DockerLogin")
 
