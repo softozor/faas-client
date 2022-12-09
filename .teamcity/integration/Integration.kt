@@ -11,7 +11,7 @@ import templates.DockerLogin
 class Integration(
     dockerToolsTag: String
 ) : BuildType({
-    templates(DockerLogin)
+    templates(DockerLogin.create())
 
     id("Integration")
     name = "Integration"
