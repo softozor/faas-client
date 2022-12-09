@@ -3,16 +3,15 @@ package integration
 import common.git.publishCommitShortSha
 import common.python.buildPythonPackage
 import common.python.publishPythonPackageToHosted
+import common.templates.NexusDockerLogin
 import jetbrains.buildServer.configs.kotlin.BuildType
 import jetbrains.buildServer.configs.kotlin.DslContext
-import jetbrains.buildServer.configs.kotlin.Template
 import jetbrains.buildServer.configs.kotlin.triggers.vcs
 
 class Integration(
     dockerToolsTag: String,
-    template: Template
 ) : BuildType({
-    templates(template)
+    templates(NexusDockerLogin)
 
     id("Integration")
     name = "Integration"
