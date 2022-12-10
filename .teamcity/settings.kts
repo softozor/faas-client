@@ -1,3 +1,4 @@
+import common.templates.NexusDockerLogin
 import integration.Integration
 import jetbrains.buildServer.configs.kotlin.project
 import jetbrains.buildServer.configs.kotlin.version
@@ -30,6 +31,8 @@ project {
     params {
         param("teamcity.ui.settings.readOnly", "true")
     }
+
+    template(NexusDockerLogin)
 
     val dockerToolsTag = "ca2d28e2"
 
