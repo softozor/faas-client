@@ -65,10 +65,7 @@ class FaasClient:
         )
         return result.exit_code
 
-    def deploy(self, path_to_faas_configuration, function_name, env=None):
-        if env is None:
-            env = {}
-        env_options = build_env_options(env)
+    def deploy(self, path_to_faas_configuration, function_name):
         result = self._cli(
             "deploy",
             "-f",
@@ -77,7 +74,7 @@ class FaasClient:
             function_name,
             "-g",
             self.endpoint,
-            " ".join(env_options),
+            _env=self._env,
         )
         return result.exit_code
 
