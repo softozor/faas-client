@@ -1,7 +1,7 @@
 import os.path
 import re
 from io import StringIO
-from typing import Dict
+from os import _Environ
 
 import sh
 
@@ -23,7 +23,7 @@ class FaasClient:
         self._password = password
         self._env = env
 
-    def login(self) -> int:
+    def login(self):
         result = self._cli(
             "login",
             "-g",
@@ -33,9 +33,10 @@ class FaasClient:
             "--password",
             self._password,
         )
-        return result.exit_code
+        if result.exit_code != 0:
+            raise FaasClientException("unable to log on")
 
-    def build(self, path_to_faas_configuration: str, function_name: str) -> int:
+    def build(self, path_to_faas_configuration: str, function_name: str):
         configuration_filename = os.path.basename(path_to_faas_configuration)
         result = self._cli(
             "build",
@@ -46,9 +47,10 @@ class FaasClient:
             _cwd=os.path.dirname(path_to_faas_configuration),
             _env=self._env,
         )
-        return result.exit_code
+        if result.exit_code != 0:
+            raise FaasClientException(f"unable to build function {function_name}")
 
-    def push(self, path_to_faas_configuration: str, function_name: str) -> int:
+    def push(self, path_to_faas_configuration: str, function_name: str):
         configuration_filename = os.path.basename(path_to_faas_configuration)
         result = self._cli(
             "push",
@@ -59,9 +61,10 @@ class FaasClient:
             _cwd=os.path.dirname(path_to_faas_configuration),
             _env=self._env,
         )
-        return result.exit_code
+        if result.exit_code != 0:
+            raise FaasClientException(f"unable to push function {function_name}")
 
-    def deploy(self, path_to_faas_configuration: str, function_name: str) -> int:
+    def deploy(self, path_to_faas_configuration: str, function_name: str):
         result = self._cli(
             "deploy",
             "-f",
@@ -72,7 +75,8 @@ class FaasClient:
             self.endpoint,
             _env=self._env,
         )
-        return result.exit_code
+        if result.exit_code != 0:
+            raise FaasClientException(f"unable to deploy function {function_name}")
 
     def is_ready(self, function_name: str) -> bool:
         output_buffer = StringIO()
