@@ -8,10 +8,6 @@ import sh
 from faas_client.exception import FaasClientException
 
 
-def build_env_options(env):
-    return [f"-e {key}={value}" for (key, value) in env.items()]
-
-
 class FaasClient:
     def __init__(
         self,
@@ -19,7 +15,7 @@ class FaasClient:
         gateway_port: int,
         username: str,
         password: str,
-        env: Dict[str, str] = None,
+        env: _Environ[str] = None,
     ):
         self._cli = sh.Command("faas-cli")
         self.endpoint = f"{gateway_url}:{gateway_port}"
@@ -27,7 +23,7 @@ class FaasClient:
         self._password = password
         self._env = env
 
-    def login(self):
+    def login(self) -> int:
         result = self._cli(
             "login",
             "-g",
@@ -39,7 +35,7 @@ class FaasClient:
         )
         return result.exit_code
 
-    def build(self, path_to_faas_configuration, function_name):
+    def build(self, path_to_faas_configuration: str, function_name: str) -> int:
         configuration_filename = os.path.basename(path_to_faas_configuration)
         result = self._cli(
             "build",
@@ -52,7 +48,7 @@ class FaasClient:
         )
         return result.exit_code
 
-    def push(self, path_to_faas_configuration, function_name):
+    def push(self, path_to_faas_configuration: str, function_name: str) -> int:
         configuration_filename = os.path.basename(path_to_faas_configuration)
         result = self._cli(
             "push",
@@ -65,7 +61,7 @@ class FaasClient:
         )
         return result.exit_code
 
-    def deploy(self, path_to_faas_configuration, function_name):
+    def deploy(self, path_to_faas_configuration: str, function_name: str) -> int:
         result = self._cli(
             "deploy",
             "-f",
@@ -78,7 +74,7 @@ class FaasClient:
         )
         return result.exit_code
 
-    def is_ready(self, function_name):
+    def is_ready(self, function_name: str) -> bool:
         output_buffer = StringIO()
         result = self._cli(
             "describe", function_name, "-g", self.endpoint, _out=output_buffer
@@ -93,11 +89,11 @@ class FaasClient:
 
 
 class FaasClientFactory:
-    def __init__(self, gateway_port: int, env: Dict[str, str] = None):
+    def __init__(self, gateway_port: int, env: _Environ[str] = None):
         self._gateway_port = gateway_port
         self._env = env
 
-    def create(self, gateway_url, username, password):
+    def create(self, gateway_url: str, username: str, password: str):
         return FaasClient(
             gateway_url, self._gateway_port, username, password, self._env
         )
