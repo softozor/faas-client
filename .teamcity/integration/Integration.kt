@@ -1,8 +1,8 @@
 package integration
 
 import common.git.publishCommitShortSha
-import common.python.buildPythonPackage
-import common.python.publishPythonPackageToHosted
+import common.python.build
+import common.python.publishToHosted
 import common.templates.NexusDockerLogin
 import jetbrains.buildServer.configs.kotlin.BuildType
 import jetbrains.buildServer.configs.kotlin.DslContext
@@ -35,8 +35,8 @@ class Integration(
 
     steps {
         publishCommitShortSha()
-        buildPythonPackage(dockerToolsTag)
-        publishPythonPackageToHosted(dockerToolsTag)
+        build(dockerToolsTag)
+        publishToHosted(dockerToolsTag)
     }
 
     artifactRules = """
